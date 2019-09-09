@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>J-Grader</title>
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen"/>
+  <link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
+  <link type="text/css" rel="stylesheet" href="css/codemirror/codemirror.css" media="screen"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  <script type="text/javascript" src="js/moment.min.js"></script>
+  <script type="text/javascript" src="js/scripts.js"></script>
+  <script type="text/javascript" src="js/vkbeautify.js"></script>
+  <script type="text/javascript" src="js/codemirror/codemirror.js"></script>
+  <script type="text/javascript" src="js/codemirror/mode/xml/xml.js"></script>
+  <script>
+            //Make sure that we have an auth-key. This doesn't ensure that its valid.
+            //Only that one exists in local storage, there's really no need to ensure its
+            //validity since all subsequent API calls would fail with an invalid Authorization header.
+            //The worst case is that someone can get to a broken index page and make no API calls.
+
+        </script>
+</head>
+<body class="grey darken-3">
+<header>
+  <nav>
+    <div class="nav-wrapper grey darken-3">
+      <a href="" class="brand-logo white-text">Grader</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="white-text" href="addStudent.html">Add Student</a></li>
+        <li><a class="white-text" href="status.html">Add Class</a></li>
+        <li><a class="white-text" href="tools.html">All Students</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<main>
+  <div class="container">
+    <div class="row">
+      <table id="student-table" class="responsive-table centered highlight" bgcolor="white">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Price</th>
+          <th>Email</th>
+          <th>edit</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+        </tr>
+        </tbody>
+      </table>
+      <div class="col s12 red white-text hide" id="errorArea">
+      </div>
+      <!--Success message-->
+      <div class="col s12 green darken-3 white-text hide" id="successArea">
+      </div>
+    </div>
+  </div>
+</main>
+<footer class="page-footer grey darken-3 hide-on-med-and-down">
+  <div class="container">
+    <div class="right" id="txt"></div>
+  </div>
+</footer>
+<footer class="page-footer grey darken-3 hide-on-med-and-down">
+  <div class="footer-copyright grey darken-2">
+    <div class="container">2019 Designed By Jay Patel </div>
+  </div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var colElems = document.querySelectorAll('.collapsible');
+                var toolElems = document.querySelectorAll('.tooltipped');
+
+    });
+
+        // append row to the HTML table
+        function appendRow() {
+            var tbl = document.getElementById('student-table'), // table reference
+                row = tbl.insertRow(tbl.rows.length),      // append table row
+                i;
+                console.log("inside appendRow");
+                console.log(document.getElementById("student_id").value);
+                createCell(row.insertCell(0), document.getElementById("student_id").value, 'row');
+                createCell(row.insertCell(1), document.getElementById("first_name").value, 'row');
+                createCell(row.insertCell(2), document.getElementById("last_name").value, 'row');
+                createCell(row.insertCell(3), document.getElementById("email").value, 'row');
+                clearAll();
+
+        }
+
+        // create DIV element and append to the table cell
+        function createCell(cell, text, style) {
+            var div = document.createElement('div'), // create DIV element
+                txt = document.createTextNode(text); // create text node
+            div.appendChild(txt);                    // append text node to the DIV
+            div.setAttribute('class', style);        // set DIV class attribute
+            div.setAttribute('className', style);    // set DIV class attribute for IE (?!)
+            cell.appendChild(div);                   // append DIV to the table cell
+        }
+
+
+        function clearAll(){
+          console.log("inside ClearAll");
+          document.getElementById("student_id").value = null;
+          document.getElementById("first_name").value = null;
+          document.getElementById("last_name").value = null;
+          document.getElementById("email").value = null
+        }
+
+        function validate(){
+          console.log("inside validate");
+          if(document.getElementById("student_id").value == ""){
+            console.log("ID empty");
+            alert("Id is empty");
+          }
+          else if(document.getElementById("first_name").value == ""){
+             alert("First name is empty");
+          }
+          else if (document.getElementById("last_name").value == ""){
+            alert("Last Name is empty");
+          }
+          else{
+            appendRow();
+          }
+        }
+        </script>
+</body>
+</html>

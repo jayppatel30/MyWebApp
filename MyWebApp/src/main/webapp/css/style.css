@@ -1,0 +1,108 @@
+/**Don't use the Roboto Fonts*/
+html {
+    font-family: GillSans, Calibri, Trebuchet, sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+.noClick {
+    pointer-events: none;
+}
+/*Tab styling*/
+.tabs .tab a  {
+    color: black;
+}
+.tabs .tab a:hover {
+    color: #1976D2;
+}
+.tabs .indicator {
+    background-color: #1976D2;
+    height: 5px;
+}
+.tabs a.active {
+    color: #1976D2 !important;
+}
+h6 {
+    color: grey;
+}
+.container {
+    width: 95%;
+    max-width: 2000px;
+}
+.mdnHistoryRow {
+    font-size: 12px;
+}
+main {
+    flex: 1 0 auto;
+}
+.error {
+    font-size: 11px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
+
+header, main, footer {
+  padding-left: 175px;
+}
+
+.side-nav a {
+    padding: 0 0 0 10px !important;
+}
+
+.side-nav .userView {
+    margin-bottom: 0;
+    line-height: 0;
+    padding: 50px 10px 10px 10px;
+}
+
+.side-nav .brand-logo {
+    width: 65%;
+    max-height: 75%;
+    max-width: 210%;
+    min-width: 85px;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+.side-nav .side-link {
+    font-size: 0.8em;
+    padding: 0;
+}
+
+.side-nav a.btn {
+    font-size: 10px;
+    height: 35px;
+    line-height: 35px;
+    margin: 0 0 20px 0;
+    padding: 0 0 10px 0;
+}
+.side-nav .side-link-submenu-entry {
+    padding-left: 20px !important;
+}
+.nav-wrapper .right {
+    padding-right: 175px;
+}
+.nav-wrapper .left {
+    margin-left: 10px;
+}
+.capitalize{
+  text-transform:capitalize;
+   display:inline-block
+}
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+  .nav-wrapper .right {
+      padding-right: 0;
+  }
+}
