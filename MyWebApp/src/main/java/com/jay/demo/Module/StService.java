@@ -1,12 +1,10 @@
 package com.jay.demo.Module;
 
+import com.jay.demo.Objects.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,13 +23,27 @@ public class StService {
         for (Student s:students) {
             if(s.getStudentId().equals(id)){
                 students.remove(s);
+                System.out.println("Student with id- "+id+" is Deleted");
+                break;
             }
         }
     }
 
     public List<Student> getStudents(){
-        System.out.println("Inside getStudents");
+        System.out.println("getStudents Invoked");
         return students;
+    }
+
+    public void editStudent(Student student){
+        for (Student s : students) {
+            String check = s.getStudentId();
+            if (check.equals(student.getStudentId())) {
+                s.setStudentId(student.getStudentId());
+                s.setFirstname(student.getFirstname());
+                s.setLastname(student.getLastname());
+                s.setEmail(student.getEmail());
+            }
+        }
     }
 
     public Student getStudentById(String id) {

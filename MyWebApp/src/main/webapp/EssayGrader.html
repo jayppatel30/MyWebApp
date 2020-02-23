@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Grader</title>
+  <link type="text/css" rel="stylesheet" href="materialize.min.css" media="screen"/>
+  <link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
+  <link type="text/css" rel="stylesheet" href="css/codemirror/codemirror.css" media="screen"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  <script type="text/javascript" src="js/moment.min.js"></script>
+  <script type="text/javascript" src="js/scripts.js"></script>
+  <script type="text/javascript" src="js/vkbeautify.js"></script>
+  <script type="text/javascript" src="js/codemirror/codemirror.js"></script>
+  <script type="text/javascript" src="js/codemirror/mode/xml/xml.js"></script>
+  <script>
+            //Make sure that we have an auth-key. This doesn't ensure that its valid.
+            //Only that one exists in local storage, there's really no need to ensure its
+            //validity since all subsequent API calls would fail with an invalid Authorization header.
+            //The worst case is that someone can get to a broken index page and make no API calls.
+
+        </script>
+</head>
+    
+<body class="grey darken-4 white-text darkTheme themeable">
+<header>
+  <nav>
+        <div class="nav-wrapper grey darken-3">
+      <a href="index.html"><img class = "brand-logo" src="images/myLogo.png" width="7.5%" height="auto"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To add new Student" href="addStudent.html"><i class="material-icons left">add_circle</i>Add Student</a></li>
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To see all the students." href="allStudents.html"><i class="material-icons left">contacts</i>All Students</a></li>
+        <li><a class="blue-text" href="EssayGrader.html"><i class="material-icons left blue-text">description</i>Essay Grader</a></li>
+        <li><a class="white-text" href="tools.html">All Students</a></li>
+        <li class="hide-on-small-and-down tooltipped" data-position="bottom" data-tooltip="Click here to change the color of the page" onclick="invertColors()"><i class="material-icons left" id = "invert-colors">invert_colors</i></li>
+
+      </ul>
+    </div>
+    </nav>
+</header>
+<main>
+  <div class="container">
+    <div class="row">
+    <form class="col s12">
+        <h5 class="Black-text col s6">Enter Student's Text:</h5>
+        <h5 class="Black-text col s6">Enter optimal Text:</h5>
+      <div class="row">
+        <div class="input-field col s5">
+          <textarea id="EssayTextBox" class="materialize-textarea themeable"></textarea>
+<!--          <label for="EssayTextBox">Essay</label>-->
+        </div>
+          <div class="col s1"></div>
+          <div class="input-field col s5">
+          <textarea id="EssayTextBox1" class="materialize-textarea themeable" ></textarea>
+<!--          <label for="EssayTextBox">Essay</label>-->
+        </div>
+      </div>
+        <div class="row">
+            <div class="input-field col s12">
+            <div class="chips chips-placeholder themeable">
+                </div>
+            </div>
+        </div>
+    </form>
+  </div>
+      <div class="row">
+        <a class="waves-effect waves-light green lighten-1 btn" id="Grade" onclick="allFunctions()"> Grade Essay</a>
+    </div>
+  </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m3"></div>
+            <div class="col s12 m6">
+                <div class="div1">
+                    <div class="div2"></div>
+                </div>
+            </div>
+            <div class="col s12 m3"></div>
+        </div>
+    </div>
+  <div class="container" id="editStudent" style="display: none;">
+        <div class="row">
+            <h1 class="center">Grades</h1>
+            <form class="col s12 ">
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input disabled value="Counting..." id="spell_Check_Count" type="text" class="themeable">
+                        <label for="disabled" class="themeable">Spelling Error Count</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input disabled value="Counting..." id="similarity_Check_Count" type="text" class="themeable">
+                        <label for="disabled" class="themeable">Similarity Count</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input disabled value="Counting..." id="keywords_Count" type="text" class="themeable">
+                        <label for="disabled" class="themeable">Keywords Count</label>
+                    </div>
+<!--            
+                    <div class="input-field col s12">
+                        <textarea value="Counting..." id="spell_Check_Errors" type="text" class="materialize-textarea white-text"></textarea>
+                        <label for="disabled" class="white-text">Potential Error's</label>
+                    </div>
+-->
+<!--
+                    <div class="input-field col s6">
+                        <input id="last_name" type="text" class="validate white-text lighten-2">
+                        <label for="last_name">Last Name</label>
+                    </div>
+-->
+                </div>
+<!--
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input disabled value="I am not editable" id="email" type="email" class="validate">
+                        <label for="email">Email (Cannot Edit)</label>
+                    </div>
+                </div>
+-->
+            </form>
+        </div>
+    </div>    
+</main>
+
+<footer class="page-footer grey darken-3 hide-on-med-and-down" style="position:fixed;bottom:0;left:0;width:100%;">
+  <div class="footer-copyright grey darken-2">
+    <div class="left">&nbsp; 2019 Designed By Jay Patel
+    </div>
+  </div
+</footer>
+<script>
+    $('.chips-placeholder').chips({
+        placeholder: 'Add Keywords',
+        limit: 1000
+    });
+    $(document).ready(function() {
+                $('.tooltipped').tooltip();
+                       updateTheme();
+
+                   });
+     document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
+  });
+    function allFunctions(){
+        validate();
+    }
+    function validate(){
+        if(!(document.getElementById("EssayTextBox").value == "") && !(document.getElementById("EssayTextBox1").value == "")){
+            spellCheck();
+        }
+        else{
+            alert("Student Essay or Optimal essay should not be empty");
+        }
+    }
+    function keywordsCheck(){
+        var allchips = [];
+            var chipData = (M.Chips.getInstance($('.chips')).chipsData);
+            var i =0;
+            for(var chip in chipData){
+                allchips[i] = (chipData[i].tag).replace(/\s+$/, '');;
+                i++;
+        }
+        var text = document.getElementById("EssayTextBox").value;
+        
+        var data = {"text":text,"keywords":allchips};
+                    var jsonData = JSON.stringify(data);
+                        $.ajax({
+                          type: 'POST',
+                          url: "http://localhost:8080/check/keywords",
+                          data: jsonData,
+                          contentType: "application/json"
+                        }, function() {
+                           console.log("getJSON error.");
+                       }).done(function(response ) {
+                           console.log("total keywords in the text are "+response);
+                            document.getElementById("keywords_Count").value = response +"/"+i;
+                       }).fail(function() {
+                           console.log("getStudent failed.");
+                           M.toast({html: 'Failed to add Student', classes: 'rounded red'});
+                       });
+    }
+    function spellCheck(){
+            document.querySelector('.div1').classList.add('progress');
+            document.querySelector('.div2').classList.add('indeterminate');
+            document.getElementById("spell_Check_Count").value = "Counting..";
+            var x = document.getElementById("editStudent");
+            x.style.display = "block";
+            //console.log(document.getElementById("EssayTextBox").value);
+            window.scrollTo(0,document.body.scrollHeight);
+            keywordsCheck();
+            similarityChecker();
+            var text= removePunctuation(document.getElementById("EssayTextBox").value); 
+            var settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://montanaflynn-spellcheck.p.rapidapi.com/check/?text="+text,
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "montanaflynn-spellcheck.p.rapidapi.com",
+                    "x-rapidapi-key": "3c91c20696msh6de27f2332e0e23p1df247jsnfab9c56263bd"
+                }
+            }
+            $.ajax(settings).done(function (response) {
+                document.getElementById("spell_Check_Count").value = Object.keys(response.corrections).length;
+                //document.getElementById("spell_Check_Errors").value = JSON.stringify(response.corrections, undefined, 5);
+                document.querySelector('.div1').classList.remove('progress');
+                document.querySelector('.div2').classList.remove('indeterminate');
+                console.log(response.original);
+               console.log(Object.keys(response.corrections).length);
+             console.log(response.corrections);
+            });
+        }
+    
+    function synonym(){ 
+            $.ajax({
+              url : "https://words.bighugelabs.com/api/2/9ed053a144459dc9ec12a6772b9dffcf/happy/json?callback=my_callback_function=?", 
+              dataType : 'json',
+              complete : function(jqXHR, textStatus) {
+                if (textStatus == 'parsererror') {
+                  // Did not find any synonyms
+                  alert("404 error because no synonyms exist for this word");
+                }
+              },
+              success : function(data) {
+                // Found synonyms
+                //alert(data.adjective.rel);
+                  console.log(data.adjective.rel);
+              }
+            });
+        }
+     function splitStringToSentences(){
+        str = (document.getElementById('EssayTextBox').value);
+        sentences = str.replace(/([.?!])\s*(?=[A-Z])/g, "$1|").split("|")
+        console.log(sentences);
+     }
+    
+    function removePunctuation(inp){
+        var out  = inp.replace(/[.,\/#!$%\^&\*;:\"{}=\_~()]/g,"");
+        var fin =   out.replace(/\s{2,}/g," ");
+        console.log(fin);
+        return fin;
+    }
+    
+    function similarityChecker(){
+        var text1 = (document.getElementById('EssayTextBox').value).replace(/(\r\n|\n|\r)/gm,"");
+        var text2 = (document.getElementById('EssayTextBox1').value).replace(/(\r\n|\n|\r)/gm,"");
+        
+        console.log("THe text is "+ text1);
+        console.log("THe text is "+ text2   );
+        
+        var checkTextsSimilarity = {
+            "async": true,
+	       "crossDomain": true,
+	       "url": "https://text-similarity-calculator.p.rapidapi.com/stringcalculator.php?ftext="+text1+"&stext="+text2+"",
+	       "method": "GET",
+	       "headers": {
+		      "x-rapidapi-host": "text-similarity-calculator.p.rapidapi.com",
+		      "x-rapidapi-key": "3c91c20696msh6de27f2332e0e23p1df247jsnfab9c56263bd"
+            }
+        }
+
+        $.ajax(checkTextsSimilarity).done(function (response) {
+            console.log(response);
+            document.getElementById("similarity_Check_Count").value = response.percentage+"%";
+            console.log(response.percentage);
+        });
+    }
+    
+    
+
+
+    
+        </script>
+</body>
+</html>

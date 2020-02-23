@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>J-Grader</title>
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen"/>
+    <title>Grader</title>
+    <link type="text/css" rel="stylesheet" href="materialize.min.css" media="screen"/>
     <link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
     <link type="text/css" rel="stylesheet" href="css/codemirror/codemirror.css" media="screen"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/materialize.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript" src="js/moment.min.js"></script>
     <script type="text/javascript" src="js/scripts.js"></script>
     <script type="text/javascript" src="js/vkbeautify.js"></script>
@@ -22,19 +22,21 @@
 
         </script>
 </head>
-<body class="grey darken-3">
+<body class="grey darken-4 white-text darkTheme themeable">
 <header>
 
     <nav>
         <div class="nav-wrapper grey darken-3">
-            <a href="" class="brand-logo white-text">Grader</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a class="blue-text" href="addStudent.html">Add Student</a></li>
-                <li><a class="white-text" href="allStudents.html">All Students</a></li>
-                <li><a class="white-text" href="status.html">Add Class</a></li>
-                <li><a class="white-text" href="tools.html">All Students</a></li>
-            </ul>
-        </div>
+      <a href="index.html"><img class = "brand-logo" src="images/myLogo.png" width="7.5%" height="auto"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="blue-text" href="addStudent.html"><i class="material-icons left blue-text">add_circle</i>Add Student</a></li>
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To see all the students." href="allStudents.html"><i class="material-icons left">contacts</i>All Students</a></li>
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To grade new Essay." href="EssayGrader.html"><i class="material-icons left">description</i>Essay Grader</a></li>
+        <li><a class="white-text" href="tools.html">All Students</a></li>
+        <li class="hide-on-small-and-down tooltipped" data-position="bottom" data-tooltip="Click here to change the color of the page" onclick="invertColors()"><i class="material-icons left" id = "invert-colors">invert_colors</i></li>
+
+      </ul>
+    </div>
     </nav>
 
 </header>
@@ -46,21 +48,21 @@
             <form class="col s12">
                 <div class="row">
                     <div class="input-field col s6">
-                        <input id="student_id" type="number" class="validate">
+                        <input id="student_id" type="number" class="validate themeable">
                         <label for="student_id">ID</label>
                     </div>
                     <div class="input-field col s6 darken-3">
-                        <input id="first_name" type="text" class="validate">
+                        <input id="first_name" type="text" class="validate themeable">
                         <label for="first_name">First Name</label>
                     </div>
                     <div class="input-field col s6">
-                        <input id="last_name" type="text" class="validate">
+                        <input id="last_name" type="text" class="validate themeable">
                         <label for="last_name">Last Name</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="email" type="email" class="validate">
+                        <input id="email" type="email" class="validate themeable">
                         <label for="email">Email</label>
                     </div>
                 </div>
@@ -69,34 +71,35 @@
     </div>
     <div class="container">
         <div class="row">
-            <a class="waves-effect waves-light btn" id="add_student" onclick="validate()">Add Student</a>
+            <a class="waves-effect waves-light green lighten-1 btn" id="add_student" onclick="validate()">ADD STUDENT</a>
         </div>
     </div>
 </main>
-<footer class="page-footer grey darken-3 hide-on-med-and-down">
-    <div class="container">
-        <div class="right" id="txt"></div>
-    </div>
-</footer>
-<footer class="page-footer grey darken-3 hide-on-med-and-down">
-    <div class="footer-copyright grey darken-2">
-        <div class="container">2019 Designed By Jay Patel </div>
-    </div>
-</footer>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var colElems = document.querySelectorAll('.collapsible');
-        var toolElems = document.querySelectorAll('.tooltipped');
-
-    });
 
 
-    var studentsName;
+<script >
+    $(document).ready(function() {
+                $('.tooltipped').tooltip();
+                       updateTheme();
+
+                   });
+     document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+  });
+
+    window.onload = function() {
+        getAllStudents();
+    };
+
+
+    var allStudents;
+    var studentIds = [];
+    var studentEmails = [];
 
         function validate(){
           console.log("inside validate");
           if(document.getElementById("student_id").value == ""){
-            console.log("ID empty");
             alert("Id is empty");
           }
           else if(document.getElementById("first_name").value == ""){
@@ -105,37 +108,78 @@
           else if (document.getElementById("last_name").value == ""){
             alert("Last Name is empty");
           }
-          else if(document.getElementById("email").value != ""){
-            if((document.getElementById("email").value).includes(" ") || !(document.getElementById("email").value).includes(".") || !(document.getElementById("email").value).includes("@")){
-                alert("Email format is not correct");
-            }
-            else{
-                addStudent(document.getElementById("first_name").value,document.getElementById("last_name").value,document.getElementById("student_id").value,document.getElementById("email").value)
-            }
+          else if(document.getElementById("email").value == ""){
+              alert("email field is empty");
           }
-          else{
-            addStudent(document.getElementById("first_name").value,document.getElementById("last_name").value,document.getElementById("student_id").value,document.getElementById("email").value)
+          else if(document.getElementById("email").value != "" || document.getElementById("student_id").value != "" ){
+            if(!((document.getElementById("email").value).includes(" ") || !(document.getElementById("email").value).includes(".") || !(document.getElementById("email").value).includes("@"))){
+                if(!studentEmails.includes(document.getElementById("email").value)){
+                    if(!studentIds.includes(document.getElementById("student_id").value)){
+                        if((document.getElementById("student_id").value).length != 9){
+                            alert("Student ID should be of length 9, Please make sure");
+                        }
+                        else{
+                            first_name = document.getElementById("first_name").value.charAt(0).toUpperCase() + document.getElementById("first_name").value.slice(1);
+                            last_name = document.getElementById("last_name").value.charAt(0).toUpperCase() + document.getElementById("last_name").value.slice(1);
+                            email = document.getElementById("email").value.charAt(0).toUpperCase() + document.getElementById("email").value.slice(1);
+                            addStudent(first_name,last_name,document.getElementById("student_id").value,email)
+                        }
+                    }
+                    else{
+                       alert("Student with Student ID "+document.getElementById("student_id").value+ " already exists");
+                    }
+                }
+                else{
+                    alert("Student with this email already exists");
+                }
+            }
+            if(studentIds.includes(studentId)){
+                    alert("studentId already Exists");
+            }
           }
         }
 
         //This function add a student
             function addStudent(firstName,lastName,studentId,email){
-                var studentToPost = {"studentId":studentId,"firstname":firstName, "lastname":lastName, "email":email};
-                var jsonData = JSON.stringify(studentToPost);
-                    $.ajax({
-                      type: 'POST',
-                      url: "http://localhost:8080/add/student",
-                      data: jsonData,
-                      contentType: "application/json"
-                    }, function() {
+                    var studentToPost = {"studentId":studentId,"firstname":firstName, "lastname":lastName, "email":email};
+                    var jsonData = JSON.stringify(studentToPost);
+                        $.ajax({
+                          type: 'POST',
+                          url: "http://localhost:8080/add/student",
+                          data: jsonData,
+                          contentType: "application/json"
+                        }, function() {
+                           console.log("getJSON error.");
+                       }).done(function() {
+                           studentIds.push(studentId);
+                            studentEmails.push(email);
+                           console.log("getStudent completed");
+                           M.toast({html: 'Student added', classes: 'rounded green'});
+                           clearAll();
+                       }).fail(function() {
+                           console.log("getStudent failed.");
+                           M.toast({html: 'Failed to add Student', classes: 'rounded red'});
+                       });
+                }
+
+                //This function get the student
+               function getAllStudents() {
+                   console.log("Requesting List of Students")
+                   console.log("Requesting List of Students")
+                    $.when($.getJSON("/students", function(data) {
+                       console.log("Data recieved:");
+                       allStudents = data;
+                       for(i=0;i<allStudents.length;i++){
+                            var student = allStudents[i];
+                            studentIds.push(student.studentId);
+                            studentEmails.push(student.email);
+                         }
+                   }, function() {
                        console.log("getJSON error.");
-                   }).done(function() {
-                       console.log("getStudent completed");
-                       M.toast({html: 'Student added', classes: 'rounded green'});
-                       clearAll();
+                   })).done(function() {
+                       console.log("Students details GET completed.");
                    }).fail(function() {
-                       console.log("getStudent failed.");
-                       M.toast({html: 'Failed to add Student', classes: 'rounded red'});
+                       console.log("Students details GET failed.");
                    });
                 }
 

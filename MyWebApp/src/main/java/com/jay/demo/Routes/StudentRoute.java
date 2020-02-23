@@ -2,9 +2,13 @@ package com.jay.demo.Routes;
 
 import java.util.List;
 
+import com.jay.demo.Module.EssayKeywordsService;
+import com.jay.demo.Module.SimilarityCheck;
 import com.jay.demo.Objects.EssayKeywords;
 import com.jay.demo.Module.StService;
 import com.jay.demo.Objects.Student;
+import com.jay.demo.Objects.TwoTexts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +16,16 @@ import org.springframework.web.bind.annotation.*;
 //Run project with 'Spring Boot App'
 //Test the api working :: try with http://localhost:8080/students/103 in post man
 //In chrome run http://localhost:8080/swagger-ui.html -> Expand operations -> Try it out
-
+@Slf4j
 @RestController
-public class StudentService {
+public class StudentRoute {
 
     @Autowired
     private StService ss;
-    private EssayKeywords ek = new EssayKeywords();
+    @Autowired
+    private EssayKeywordsService ek;
+    @Autowired
+    private SimilarityCheck sim;
 
     @GetMapping("students")
     @RequestMapping(method=RequestMethod.GET, value = "students")
@@ -53,8 +60,14 @@ public class StudentService {
     @PostMapping(path="/check/keywords")
     @RequestMapping(value = "/check/keywords", method = RequestMethod.POST)
     public int totalKeywords(@RequestBody EssayKeywords textData) throws Exception{
-        System.out.println(textData.getKeywords().length);
-        return ek.totalKeywords(textData.getText(),textData.getKeywords());
+        textData.getKeywords();
+        return ek.totalKeywords(textData);
+    }
+
+    @PostMapping(path="/check/similarity")
+    @RequestMapping(value = "/check/similarity", method = RequestMethod.POST)
+    public double getTest(@RequestBody TwoTexts texts){
+        return sim.similar(texts.getText1(),texts.getText2());
     }
 
 }

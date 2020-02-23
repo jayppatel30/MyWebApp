@@ -139,9 +139,9 @@ function updateTheme() {
     let themeables = $(".themeable"),
         currentTheme = localStorage.getItem("theme");
     if(currentTheme === "light") {
-        themeables.removeClass("grey darken-4 white-text darkTheme").addClass("blue-grey lighten-5 lightTheme");
+        themeables.removeClass("grey darken-4 white-text darkTheme").addClass("white lighten-5 lightTheme");
     } else {
-        themeables.removeClass("blue-grey lighten-5 lightTheme").addClass("grey darken-4 white-text darkTheme");
+        themeables.removeClass("white lighten-5 lightTheme").addClass("grey darken-4 white-text darkTheme");
     }
 }
 
@@ -163,19 +163,7 @@ function invertColors() {
     }
 }
 
-function populateUserDetails() {
-    $("#userFullName").text(localStorage.getItem('userFullName'));
-    $("#userJobTitle").text(localStorage.getItem('userJobTitle'));
 
-    //populate the environment we're in.
-    let environment = localStorage.getItem('environment');
-    if(environment !==  undefined) {
-        $("#envIndicator").text(environment);
-    } else {
-        $("#envIndicator").text('U N K N O W N');
-    }
-
-}
 
 function startTime() {
   let today = new Date();

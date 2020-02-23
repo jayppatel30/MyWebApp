@@ -1,4 +1,4 @@
-package com.jay.demo.Module;
+package com.jay.demo.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

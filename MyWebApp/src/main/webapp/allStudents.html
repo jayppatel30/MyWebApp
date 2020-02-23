@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>J-Grader</title>
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen"/>
+    <title>Grader</title>
+    <link type="text/css" rel="stylesheet" href="materialize.min.css" media="screen"/>
     <link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
     <link type="text/css" rel="stylesheet" href="css/codemirror/codemirror.css" media="screen"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -22,19 +22,21 @@
 
         </script>
 </head>
-<body class="grey darken-3">
+<body class="grey darken-4 white-text darkTheme themeable">
 <header>
 
     <nav>
         <div class="nav-wrapper grey darken-3">
-            <a href="" class="brand-logo white-text">Grader</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a class="white-text" href="addStudent.html">Add Student</a></li>
-                <li><a class="blue-text" href="allStudents.html">All Students</a></li>
-                <li><a class="white-text" href="status.html">Add Class</a></li>
-                <li><a class="white-text" href="tools.html">All Students</a></li>
-            </ul>
-        </div>
+      <a href="index.html"><img class = "brand-logo" src="images/myLogo.png" width="7.5%" height="auto"></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To add new Student" href="addStudent.html"><i class="material-icons left">add_circle</i>Add Student</a></li>
+        <li><a class="blue-text " href="allStudents.html"><i class="material-icons left blue-text">contacts</i>All Students</a></li>
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To grade new Essay." href="EssayGrader.html"><i class="material-icons left">description</i>Essay Grader</a></li>
+        <li><a class="white-text" href="tools.html">All Students</a></li>
+        <li class="hide-on-small-and-down tooltipped" data-position="bottom" data-tooltip="Click here to change the color of the page" onclick="invertColors()"><i class="material-icons left" id = "invert-colors">invert_colors</i></li>
+
+      </ul>
+    </div>
     </nav>
 
 </header>
@@ -42,13 +44,14 @@
 
     <div class="container">
         <div class="row">
-            <table id="student-table" class="responsive-table centered highlight" bgcolor="white">
+            <table id="student-table" class="responsive-table centered highlight" >
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>First Name</th>
-                    <th>Last Price</th>
+                    <th>Last Name</th>
                     <th>Email</th>
+                    <th colspan="2" style="text-align:center;">Edit</th>
                 </tr>
                 </thead>
 
@@ -57,48 +60,76 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="col s12 red white-text hide" id="errorArea">
+            <div class="col s12 red hide" id="errorArea">
             </div>
             <!--Success message-->
-            <div class="col s12 green darken-3 white-text hide" id="successArea">
+            <div class="col s12 green darken-3   hide" id="successArea">
             </div>
         </div>
     </div>
+    
+    <div class="container" id="editStudent" style="display: none;">
+        <div class="row">
+            <h1 class="center">Edit Student</h1>
+            <form class="col s12 ">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input disabled value="I am not editable" id="student_id" type="text" class="validate ">
+                        <label for="disabled" class="themeable">ID (Cannot Edit)</label>
+                    </div>
+                    <div class="input-field col s6 themeable ">
+                        <input id="first_name" type="text" class="validate themeable">
+<!--                        <label for="first_name">First Name</label>-->
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="last_name" type="text" class="validate themeable">
+<!--                        <label for="last_name">Last Name</label>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input disabled value="I am not editable" id="email" type="email" class="validate">
+                        <label for="email" class="themeable">Email (Cannot Edit)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <a class="waves-effect waves-light green lighten-1 btn" id="save_changes" onclick="editThis(this)">Save Changes</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </main>
-<footer class="page-footer grey darken-3 hide-on-med-and-down">
-    <div class="container">
-        <div class="right" id="txt"></div>
-    </div>
-</footer>
-<footer class="page-footer grey darken-3 hide-on-med-and-down">
-    <div class="footer-copyright grey darken-2">
-        <div class="container">2019 Designed By Jay Patel </div>
-    </div>
-</footer>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var colElems = document.querySelectorAll('.collapsible');
-                var toolElems = document.querySelectorAll('.tooltipped');
+    $(document).ready(function() {
+                $('.tooltipped').tooltip();
+                       updateTheme();
 
-    });
+                   });
+     document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+  });
 
     window.onload = function() {
         getAllStudents();
     };
 
 
-    var studentsName;
+    var allStudents;
 
         // append row to the HTML table
         function appendRow(firstName,lastName,studentId,email) {
             var tbl = document.getElementById('student-table'), // table reference
                 row = tbl.insertRow(tbl.rows.length),      // append table row
                 i;
+                //tbl.setAttribute("class", "black-text");
                 console.log("inside appendRow");
                 createCell(row.insertCell(0), studentId, 'row');
                 createCell(row.insertCell(1), firstName, 'row');
                 createCell(row.insertCell(2), lastName, 'row');
                 createCell(row.insertCell(3), email, 'row');
+                createButton(row.insertCell(4), studentId,'row',"delete","red");
+                createButton(row.insertCell(4), studentId,'row',"edit","orange");
 
         }
 
@@ -112,22 +143,44 @@
             cell.appendChild(div);                   // append DIV to the table cell
         }
 
+        // create DIV element and append to the table cell
+        function createButton(cell,text, style,icon,clr) {
+            var btn = document.createElement('div');
+            var chk = document.createElement('i');
+            btn.type = "button";
+            btn.className = "btn " + clr +" lighten-1";
+            btn.value = text;
+            if(icon == "delete"){
+                btn.setAttribute("onclick", "deleteStudent(this)");
+            }
+            else{
+                 btn.setAttribute("onclick", "editStudent(this)");
+            }
+            chk.className = "material-icons";
+            chk.setAttribute("id", text);
+            chk.innerHTML = icon;
+            btn.appendChild(chk);
+            cell.appendChild(btn);                  // append DIV to the table cell
+        }
 
 
-        //This function get the student
+
+
+        //This function gets all the student data when page loads
                function getAllStudents() {
                    console.log("Requesting List of Students")
                    M.toast({html: 'Getting data..', classes: 'rounded black'});
-                   $.when($.getJSON("/students", function(data) {
+                    $.when($.getJSON("/students", function(data) {
                        console.log("Data recieved:");
-                       studentsName = data;
-                       for(i=0;i<studentsName.length;i++){
-                            var student = studentsName[i];
-                            appendRow(student.firstname,student.lastname,student.studentId,student.email);
+                       allStudents = data;
+                       for(i=0;i<allStudents.length;i++){
+                            var student = allStudents[i];
+                           appendRow(student.firstname,student.lastname,student.studentId,student.email);
                          }
                    }, function() {
                        console.log("getJSON error.");
                    })).done(function() {
+                        console.log(allStudents);
                        console.log("Students details GET completed.");
                        M.toast({html: 'Fetch complete', classes: 'rounded green'});
                    }).fail(function() {
@@ -135,21 +188,94 @@
                        M.toast({html: 'Failed to get Students', classes: 'rounded red'});
                    });
                 }
-
-                function deleteStudent(id){
-                   var str = "/delete/id"
-                   $.when($.post(str))
+            //This function deletes a student.
+                function deleteStudent(obj){
+                   var id = obj.value;
+                   var str = "/delete/"+id;
+                   $.when($.get(str))
                      .done(function() {
+                       for (var i = allStudents.length - 1; i >= 0; --i) {
+                            if (allStudents[i].studentId == id) {
+                                allStudents.splice(i,1);
+                            }
+                        }
+                       console.log(allStudents);
+                       document.getElementById("student-table").deleteRow(obj.parentNode.parentNode.rowIndex);
                        M.toast({html: 'Student Deleted', classes: 'rounded green'});
-                       console.log("sendEmail Called")
                    })
                    .fail(function(err) {
                        M.toast({html: 'Failed to delete Student \n Error :'+err, classes: 'rounded red'});
                        console.log("Changes failed to send via POST.")
                        //PostToInfo("ERROR: Failed to send changes to database.\n\nError reported: " + err)
                    });
-                  toEmailString = "";
-               }
+                }
+    
+        //This function edit the extisting student
+        function editStudent(obj){
+            var x = document.getElementById("editStudent");
+            x.style.display = "block";
+            $.when($.getJSON("/students/"+obj.value, function(data) {
+                       console.log("Data recieved:");
+                       student = data;
+                            document.getElementById("student_id").value = student.studentId;
+                            document.getElementById("first_name").value = student.firstname;
+                            document.getElementById("last_name").value = student.lastname;
+                            document.getElementById("email").value = student.email;
+                   }, function() {
+                       console.log("getJSON error.");
+                   })).done(function() {
+                       console.log("Student details GET completed.");
+                       window.scrollTo(0,document.body.scrollHeight);
+                   }).fail(function() {
+                       console.log("Students does not exists.");
+                       M.toast({html: 'Student with id '+student.id+ ' don\'t exsist', classes: 'rounded red'});
+                   });
+            
+        }
+    
+    function editThis(){
+            var studentToPost = {"studentId":document.getElementById("student_id").value,"firstname":document.getElementById("first_name").value, "lastname":document.getElementById("last_name").value, "email":document.getElementById("email").value};
+            var isStudentThere = false;
+            for(var j=0;j<allStudents.length;j++){
+                if(allStudents[j].studentId == document.getElementById("student_id").value){
+                    isStudentThere = true;
+                }
+            }
+            if(isStudentThere ){
+                    var jsonData = JSON.stringify(studentToPost);
+                        $.ajax({
+                          type: 'POST',
+                          url: "http://localhost:8080/edit/student",
+                          data: jsonData,
+                          contentType: "application/json"
+                        }, function() {
+                           console.log("getJSON error.");
+                       }).done(function() {
+                            for (var i =0; i< allStudents.length; i++) {
+                                if (allStudents[i].studentId == document.getElementById("student_id").value) {
+                                    allStudents[i].firstname = document.getElementById("first_name").value;
+                                    allStudents[i].lastname = document.getElementById("last_name").value;
+                                    allStudents[i].email = document.getElementById("email").value;
+                                }
+                            }
+                            var tdTag = document.getElementsByTagName("td");
+                            location.reload();
+                           console.log("edit Student completed");
+                           M.toast({html: 'Student edited', classes: 'rounded green'});
+                       }).fail(function() {
+                           console.log("editStudent failed.");
+                           M.toast({html: 'Student with id '+student.studentId+' does not exits.', classes: 'rounded red'});
+                       });
+            }
+        else if(!isStudentThere ){
+            if(!isStudentThere){
+                M.toast({html: 'Student with id '+document.getElementById("student_id").value+' does not exits.', classes: 'rounded red'});
+            }
+        }
+        
+    }
+ 
+    
 
         </script>
 </body>

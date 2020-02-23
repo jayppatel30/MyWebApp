@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <title>J-Grader</title>
-  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen"/>
+  <title>Grader</title>
+  <link type="text/css" rel="stylesheet" href="materialize.min.css" media="screen"/>
   <link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
   <link type="text/css" rel="stylesheet" href="css/codemirror/codemirror.css" media="screen"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -22,114 +22,78 @@
 
         </script>
 </head>
-<body class="grey darken-3">
+<body class="grey darken-4 white-text darkTheme themeable">
 <header>
-  <nav>
-    <div class="nav-wrapper grey darken-3">
-      <a href="" class="brand-logo white-text">Grader</a>
+<nav>
+        <div class="nav-wrapper grey darken-3">
+      <a href="index.html"><img class = "brand-logo" src="images/myLogo.png" width="7.5%" height="auto"></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a class="white-text" href="addStudent.html">Add Student</a></li>
-        <li><a class="white-text" href="allStudents.html">All Students</a></li>
-        <li><a class="white-text" href="status.html">Add Class</a></li>
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To add new Student" href="addStudent.html"><i class="material-icons left white-text">add_circle</i>Add Student</a></li>
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To see all the students." href="allStudents.html"><i class="material-icons left">contacts</i>All Students</a></li>
+        <li><a class="white-text tooltipped" data-position="bottom" data-tooltip="To grade new Essay." href="EssayGrader.html"><i class="material-icons left">description</i>Essay Grader</a></li>
         <li><a class="white-text" href="tools.html">All Students</a></li>
+        <li class="hide-on-small-and-down tooltipped" data-position="bottom" data-tooltip="Click here to change the color of the page" onclick="invertColors()"><i class="material-icons left" id = "invert-colors">invert_colors</i></li>
+
       </ul>
     </div>
-  </nav>
+    </nav>
 </header>
 <main>
   <div class="container">
     <div class="row">
-      <table id="student-table" class="responsive-table centered highlight" bgcolor="white">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>First Name</th>
-          <th>Last Price</th>
-          <th>Email</th>
-          <th>edit</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        <tr>
-        </tr>
-        </tbody>
-      </table>
-      <div class="col s12 red white-text hide" id="errorArea">
-      </div>
-      <!--Success message-->
-      <div class="col s12 green darken-3 white-text hide" id="successArea">
-      </div>
+        <div class="center">
+            <h1> Functions</h1>
+        </div>
+      <ul class="collapsible collapsible-accordion themeable">
+    <li>
+      <div class="collapsible-header themeable"><i class="material-icons left">add_circle</i>Add Student</div>
+      <div class="collapsible-body"><span>This function is to add a new student. When you click on "Add Student" on the nav bar it will take you to the new page to add a student. You can add a student with the given fields on the page.<p>
+          It will not let you add a student with same student id of same email.
+     </p>
+     </span></div>
+    </li>
+    <li>
+      <div class="collapsible-header themeable"><i class="material-icons">contacts</i>All Students</div>
+      <div class="collapsible-body"><span>All students page consists of all the students which are added now. Once you add all the students using add student function. You can see all the students on "All Student" page.
+          </br></br>
+          You can edit the name of the students using edit button. This will not let you change the student ID of student Email. You can just change the first name and last name of the student.
+          </br></br>
+            You can also delete any student by pressing delete button. This will delete that student form the database.
+          </span></div>
+    </li>
+    <li>
+      <div class="collapsible-header themeable"><i class="material-icons">description</i>Essay Grader</div>
+      <div class="collapsible-body"><span>
+          Essay Grader Helps you to grade students. This takes two thing. One is it takes essay of student and essay of proffessor. This gives the total spelling mistakes, Grammetical mistakes and it compares the essay to the proffessor's essay to see how much it matches. </span></div>
+    </li>
+  </ul>
     </div>
   </div>
 </main>
-<footer class="page-footer grey darken-3 hide-on-med-and-down">
-  <div class="container">
-    <div class="right" id="txt"></div>
-  </div>
-</footer>
-<footer class="page-footer grey darken-3 hide-on-med-and-down">
+<footer class="page-footer grey darken-3 hide-on-med-and-down" style="position:fixed;bottom:0;left:0;width:100%;">
   <div class="footer-copyright grey darken-2">
-    <div class="container">2019 Designed By Jay Patel </div>
-  </div>
+    <div class="left">&nbsp; 2019 Designed By Jay Patel
+    </div>
+  </div
 </footer>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var colElems = document.querySelectorAll('.collapsible');
-                var toolElems = document.querySelectorAll('.tooltipped');
+    $(document).ready(function() {
+                $('.tooltipped').tooltip();
+                       updateTheme();
 
-    });
+                   });
+     document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
+  });
 
-        // append row to the HTML table
-        function appendRow() {
-            var tbl = document.getElementById('student-table'), // table reference
-                row = tbl.insertRow(tbl.rows.length),      // append table row
-                i;
-                console.log("inside appendRow");
-                console.log(document.getElementById("student_id").value);
-                createCell(row.insertCell(0), document.getElementById("student_id").value, 'row');
-                createCell(row.insertCell(1), document.getElementById("first_name").value, 'row');
-                createCell(row.insertCell(2), document.getElementById("last_name").value, 'row');
-                createCell(row.insertCell(3), document.getElementById("email").value, 'row');
-                clearAll();
+  // Or with jQuery
 
-        }
-
-        // create DIV element and append to the table cell
-        function createCell(cell, text, style) {
-            var div = document.createElement('div'), // create DIV element
-                txt = document.createTextNode(text); // create text node
-            div.appendChild(txt);                    // append text node to the DIV
-            div.setAttribute('class', style);        // set DIV class attribute
-            div.setAttribute('className', style);    // set DIV class attribute for IE (?!)
-            cell.appendChild(div);                   // append DIV to the table cell
-        }
-
-
-        function clearAll(){
-          console.log("inside ClearAll");
-          document.getElementById("student_id").value = null;
-          document.getElementById("first_name").value = null;
-          document.getElementById("last_name").value = null;
-          document.getElementById("email").value = null
-        }
-
-        function validate(){
-          console.log("inside validate");
-          if(document.getElementById("student_id").value == ""){
-            console.log("ID empty");
-            alert("Id is empty");
-          }
-          else if(document.getElementById("first_name").value == ""){
-             alert("First name is empty");
-          }
-          else if (document.getElementById("last_name").value == ""){
-            alert("Last Name is empty");
-          }
-          else{
-            appendRow();
-          }
-        }
-        </script>
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+    
+      
+</script>
 </body>
 </html>

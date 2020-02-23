@@ -1,13 +1,17 @@
-package com.jay.demo.Module;
+package com.jay.demo.Objects;
 
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
 public class EssayKeywords {
-    @Autowired
     String text;
-    String[] keywords;
+    String keywords[] = new String[1000];
 
     public String getText() {
         return text;
@@ -23,16 +27,6 @@ public class EssayKeywords {
 
     public void setKeywords(String[] keywords) {
         this.keywords = keywords;
-    }
-
-    public int totalKeywords(String text, String[] keywords){
-        int count =0;
-        for(int i=0;i<keywords.length;i++){
-            if(text.contains(keywords[i])){
-                count++;
-            }
-        }
-        return count;
     }
 }
 
