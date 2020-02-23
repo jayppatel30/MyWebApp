@@ -192,3 +192,25 @@ function checkTime(i) {
  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
  return i;
 }
+
+function validate(){
+          console.log("inside validate");
+          if(document.getElementById("student_id").value == ""){
+            console.log("ID empty");
+            alert("Id is empty");
+          }
+          else if(document.getElementById("first_name").value == ""){
+             alert("First name is empty");
+          }
+          else if (document.getElementById("last_name").value == ""){
+            alert("Last Name is empty");
+          }
+          else if(document.getElementById("email").value != ""){
+            if((document.getElementById("email").value).includes(" ") || !(document.getElementById("email").value).includes(".") || !(document.getElementById("email").value).includes("@")){
+                alert("Email format is not correct");
+            }
+          }
+          else{
+            addStudent(document.getElementById("first_name").value,document.getElementById("last_name").value,document.getElementById("student_id").value,document.getElementById("email").value)
+          }
+        }

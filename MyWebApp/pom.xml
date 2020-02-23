@@ -55,7 +55,15 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
-    </dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.webjars/json2 -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>json2</artifactId>
+			<version>20110223</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>

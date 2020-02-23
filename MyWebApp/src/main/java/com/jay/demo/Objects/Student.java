@@ -19,9 +19,8 @@ public class Student {
 
     private String firstname;
     private String lastname;
-    private int studentId;
-
-
+    private String studentId;
+    private String email;
 
     /*** Getters ***/
     public String getFirstname() {
@@ -32,9 +31,11 @@ public class Student {
         return lastname;
     }
 
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
+
+    public String getEmail() { return email; }
 
     /*** Setters ***/
     public void setFirstname(String firstname) {
@@ -45,9 +46,11 @@ public class Student {
         this.lastname = lastname;
     }
 
-    public void setStudentId(int studentId) {
-        studentId = studentId;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
+
+    public void setEmail(String email) { this.email = email; }
 
 
 
